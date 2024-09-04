@@ -1,0 +1,110 @@
+
+$primary-color: #3498db;
+$secondary-color: #6fb0dc;
+$background-color: #f9f9f9;
+$border-color: #ddd;
+$text-color: #333;
+$error-color: #e74c3c;
+$padding: 2rem;
+$border-radius: 0.5rem;
+$input-height: 3rem;
+$button-height: 3rem;
+
+.login-container {
+  max-width: 700px;
+  width: 700px;
+  margin: 3rem auto;
+  padding: $padding;
+  background-color: #fff;
+  border-radius: $border-radius;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+
+  h2 {
+    margin-bottom: 2rem;
+    color: $primary-color;
+    font-size: 2rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    div {
+      text-align: left;
+
+      label {
+        display: block;
+        margin-bottom: 0.75rem;
+        color: $text-color;
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+
+      input {
+        width: 100%;
+        height: $input-height;
+        padding: 0 1rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      height: $button-height;
+      background-image: linear-gradient(to right, var(--bluegray-500), var(--bluegray-800));
+      color: #fff;
+      padding: 0 1rem;
+      border: none;
+      border-radius: $border-radius;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  .google-button {
+    width: 100%;
+    border-radius: $border-radius;
+    background-color: transparent;
+    border: 1px solid $border-color;
+    color: $text-color;
+    padding: 1rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .link-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .link-container a {
+    color: #3498db;
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+
+  .link-container a:hover {
+    color: #2980b9;
+  }
+
+}

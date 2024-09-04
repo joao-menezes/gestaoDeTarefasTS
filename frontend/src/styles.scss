@@ -1,0 +1,15 @@
+
+//.dark-theme {
+//  background-color: #000000;
+//  color: #ffffff;
+//}
+
+.custom-link {
+  border-bottom: 1px solid #007ad9;
+  color: #007ad9;
+
+  span {
+    font-weight: bold;
+    font-family: var(--font-family);
+  }
+}

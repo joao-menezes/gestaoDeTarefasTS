@@ -1,0 +1,8 @@
+<p-dialog header="Notifications" [(visible)]="showNotifications" modal="modal" [style]="{'width': '300px'}" [closable]="true" (onHide)="hideNotificationModal()">
+  <div *ngIf="notifications.length === 0">
+    No new notifications.
+  </div>
+  <ul *ngIf="notifications.length > 0">
+    <li *ngFor="let notification of notifications">{{ notification }}</li>
+  </ul>
+</p-dialog>

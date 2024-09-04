@@ -1,0 +1,13 @@
+<app-top-bar></app-top-bar>
+<div class="container">
+  <router-outlet></router-outlet>
+  <p-dialog header="Release Notes"
+            [(visible)]="displayReleaseNotes"
+            modal="modal"
+            draggable="false"
+            [style]="{ width: '50vw' }"
+            (onHide)="closeReleaseNotes()">
+    <app-release-notes></app-release-notes>
+  </p-dialog>
+</div>
+

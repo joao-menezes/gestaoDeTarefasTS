@@ -1,0 +1,30 @@
+<p-toast></p-toast>
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="username">Username</label>
+      <input type="text" id="username" [(ngModel)]="username" name="username" required>
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" [(ngModel)]="password" name="password" required>
+    </div>
+    <div class="link-container">
+      <p-checkbox name="rememberMe" value="remember" label="Remember Me" [(ngModel)]="rememberMe"></p-checkbox>
+      <a [routerLink]="['/forgot-password']">Forgot Password</a>
+    </div>
+    <button type="submit">Login</button>
+  </form>
+  <br>
+  <div class="link-container">
+    <a [routerLink]="['/sing-up']">Sign Up</a>
+  </div>
+  <br>
+  <p-divider align="center">
+    <b>Or</b>
+  </p-divider>
+
+  <button pButton type="button" label="Login with Google" icon="pi pi-google" (click)="loginWithGoogle()" class="google-button"></button>
+
+</div>

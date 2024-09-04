@@ -1,0 +1,62 @@
+<div *ngIf="!isLoginPage">
+  <div class="card">
+    <p-toolbar styleClass="bg-gray-900 shadow-2"
+               [style]="{ 'border-radius': '1rem',
+               'border': 'none',
+               'background-image': 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }">
+      <ng-template pTemplate="start">
+        <ng-container>
+          <img width="50px" height="50px" style="transform: scaleX(-1);" src="https://www.svgrepo.com/show/400134/cow.svg"  alt=""/>
+        </ng-container>
+      </ng-template>
+
+      <ng-template pTemplate="end">
+        <ng-container>
+
+          <div class="flex align-items-center gap-2">
+            <div class="notification-bell-container" (click)="onNotificationClick($event)">
+              <i class="pi pi-bell text-3xl"
+                 style="margin-right: 10px; color: white; cursor: pointer;"
+                 pBadge
+                 severity="success"
+                 [value]="getFormattedNotification(userNotification)"
+                 (click)="toggleNotificationModal()">
+              </i>
+              <div *ngIf="showNotifications" class="notification-dropdown">
+                <div *ngIf="notifications.length > 0">
+                  <button
+                    pButton
+                    class="clear-notifications-button"
+                    (click)="clearAllNotifications()"
+                    label="Clear All"
+                  ></button>
+
+                  <div class="notification-item" *ngFor="let notification of notifications">
+                   <i class="pi pi-info-circle"></i> {{ notification }}
+                  </div>
+                </div>
+                <div *ngIf="displayFormattedNotification()">
+                  <div class="notification-item">
+                    <i class="pi pi-info-circle"></i>
+                    {{ displayFormattedNotification() }}
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <p style="margin: 10px; color: white">|</p>
+            <span class="font-bold text-bluegray-50">
+              {{ userName }}
+            </span>
+            <p-avatar
+              image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+              shape="circle"
+              (click)="toggleMenu($event)"></p-avatar>
+            <p-tieredMenu #menu [model]="items" popup="true" [style]="{'width': '12rem'}"></p-tieredMenu>
+          </div>
+        </ng-container>
+      </ng-template>
+    </p-toolbar>
+  </div>
+</div>

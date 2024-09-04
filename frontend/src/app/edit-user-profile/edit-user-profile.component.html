@@ -1,0 +1,57 @@
+<p-toast></p-toast>
+<p-card header="Edit Profile">
+  <button
+    pButton
+    icon="pi pi-arrow-left"
+    class="back-button"
+    (click)="goBack()"
+    label="Voltar"
+  ></button>
+
+  <form (ngSubmit)="onSubmit()" class="p-card-shadow" #profileForm="ngForm">
+    <div class="p-fluid p-text-center">
+      <div class="p-field profile-image-container">
+        <label for="profileImage">
+          <img
+            *ngIf="profile.image"
+            [src]="profile.image"
+            alt="Profile Picture"
+            class="profile-image"
+          />
+          <i *ngIf="!profile.image" class="pi pi-user profile-placeholder"></i>
+          <i class="pi pi-pencil edit-icon"></i>
+        </label>
+        <input
+          id="profileImage"
+          type="file"
+          (change)="onFileChange($event)"
+          accept="image/*"
+          hidden
+        />
+      </div>
+
+      <div class="p-field">
+        <input
+          id="name"
+          type="text"
+          [(ngModel)]="profile.name"
+          name="name"
+          placeholder="Enter your name"
+          required
+          class="name-input"
+        />
+      </div>
+
+      <div class="p-field">
+        <button
+          type="submit"
+          pButton
+          label="Save"
+          [disabled]="!profileForm.valid"
+          class="p-mt-3 save-button"
+        >
+        </button>
+      </div>
+    </div>
+  </form>
+</p-card>
