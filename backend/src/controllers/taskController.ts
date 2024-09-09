@@ -21,7 +21,7 @@ export const getTasks = async (req: Request, res: Response) => {
 export const getTasksFromId = async (req: Request, res: Response) => {
   try {
     const {taskId} = req.params;
-    const tasks: TaskModel | null = await TaskModel.findOne({where: {id: taskId}});
+    const tasks: TaskModel | null = await TaskModel.findOne({where: {taskId: taskId}});
 
     if(!tasks) return res.status(HttpCodes.NOT_FOUND).send('No tasks found.');
 
@@ -43,13 +43,14 @@ export const createTask = async (req: Request, res: Response) => {
 export const updateTask = async (req: Request, res: Response) => {
   try {
     const { taskId } = req.params;
-    const [updated] = await TaskModel.update(req.body, { where: {id: taskId } });
+    const [updated] = await TaskModel.update(req.body, { where: {taskId: taskId } });
     if (updated) {
       const updatedTask = await TaskModel.findByPk(taskId);
-      res.json(updatedTask);
-    } else {
-      res.status(HttpCodes.NOT_FOUND).json({ error: 'Task not found' });
+      return res.json(updatedTask);
     }
+
+    return res.status(HttpCodes.NOT_FOUND).json({ error: 'Task not found' });
+
   } catch (error) {
     res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({error: SharedErrors.InternalServerError});
   }
@@ -58,15 +59,15 @@ export const updateTask = async (req: Request, res: Response) => {
 export const deleteTask = async (req: Request, res: Response) => {
   try {
     const { taskId } = req.params;
-    const deleted = await TaskModel.destroy({ where: { id: taskId } });
+    const deleted = await TaskModel.destroy({ where: { taskId: taskId } });
     if (deleted) {
-      res.json({
+      return res.json({
         code: HttpCodes.OK,
         message: `Task ${taskId} deleted successfully`,
       });
-    } else {
-      res.status(HttpCodes.NOT_FOUND).json({ error: 'Task not found' });
     }
+
+    return res.status(HttpCodes.NOT_FOUND).json({ error: 'Task not found' });
   } catch (error) {
     res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({error: SharedErrors.InternalServerError});
   }

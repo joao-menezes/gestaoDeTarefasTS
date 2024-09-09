@@ -9,7 +9,7 @@ import {MessageService} from "primeng/api";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
   rememberMe: boolean = false;
 
@@ -26,11 +26,15 @@ export class LoginComponent {
   // }
 
   onSubmit(): void {
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.login(this.email, this.password).subscribe({
       next: () => this.router.navigate(['home']),
-      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Credentials' })
+      error: err => {
+        console.error('Login error:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Credentials' });
+      }
     });
   }
+
 
   loginWithGoogle(){
 

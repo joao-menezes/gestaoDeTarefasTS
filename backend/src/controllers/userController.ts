@@ -21,7 +21,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const getUsersFromId = async (req: Request, res: Response) => {
   try {
     const {userId} = req.params;
-    const user: UserModel | null = await UserModel.findOne({where: {id: userId}});
+    const user: UserModel | null = await UserModel.findOne({where: {userId: userId}});
 
     if(!user) return res.status(HttpCodes.NOT_FOUND).send('No user found.');
 
@@ -33,8 +33,8 @@ export const getUsersFromId = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const task = await UserModel.create(req.body);
-    res.status(HttpCodes.CREATED).json(task);
+    const user = await UserModel.create(req.body);
+    res.status(HttpCodes.CREATED).json({user: user.name});
   } catch (error) {
     res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({error: SharedErrors.InternalServerError});
   }
@@ -43,13 +43,13 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const [updated] = await UserModel.update(req.body, { where: {id: userId } });
+    const [updated] = await UserModel.update(req.body, { where: {userId: userId } });
     if (updated) {
       const updatedUser = await UserModel.findByPk(userId);
-      res.json(updatedUser);
-    } else {
-      res.status(HttpCodes.NOT_FOUND).json({ error: 'User not found' });
+      return res.json(updatedUser);
     }
+
+    return res.status(HttpCodes.NOT_FOUND).json({ error: 'User not found' });
   } catch (error) {
     res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({error: SharedErrors.InternalServerError});
   }
@@ -58,15 +58,15 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const deleted = await UserModel.destroy({ where: { id: userId } });
+    const deleted = await UserModel.destroy({ where: { userId: userId } });
     if (deleted) {
-      res.json({
+      return res.json({
         code: HttpCodes.OK,
         message: `User ${userId} deleted successfully`,
       });
-    } else {
-      res.status(HttpCodes.NOT_FOUND).json({ error: 'User not found' });
     }
+
+    return res.status(HttpCodes.NOT_FOUND).json({ error: 'User not found' });
   } catch (error) {
     res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({error: SharedErrors.InternalServerError});
   }

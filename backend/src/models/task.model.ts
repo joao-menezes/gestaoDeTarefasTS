@@ -1,62 +1,58 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, ForeignKey, Model, Optional } from 'sequelize';
 import sequelize from "../sequelize/config/sequelize.config";
-import UserModel from "./user.model";
+import UserModel from './user.model';
+import {TaskInterface} from "../interfaces/task.interface";
 
-interface TaskAttributes {
-  id: number;
-  title: string;
-  description?: string;
-  completed: boolean;
-  userId: number;
-}
+interface TaskCreationAttributes extends Optional<TaskInterface, 'taskId'> {}
 
-interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {}
-
-class TaskModel extends Model<TaskAttributes, TaskCreationAttributes> implements TaskAttributes {
-  public id!: number;
+class TaskModel extends Model<TaskInterface, TaskCreationAttributes> implements TaskInterface {
+  public taskId!: string;
   public title!: string;
-  public description?: string;
+  public description!: string;
   public completed!: boolean;
-  public userId!: number;
 
-  public readonly user?: UserModel;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  public userId!: ForeignKey<UserModel['userId']>;
 }
 
-TaskModel.init({
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  completed: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
-  userId: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
+TaskModel.init(
+  {
+    taskId: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    completed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'userId',
+      },
+      onDelete: 'CASCADE',
     },
   },
-}, {
-  sequelize,
-  tableName: 'tasks',
-});
-
-TaskModel.belongsTo(UserModel, {
-  foreignKey: 'userId',
-  as: 'user',
-});
+  {
+    sequelize,
+    tableName: 'tasks',
+    timestamps: true,
+  }
+);
 
 export default TaskModel;

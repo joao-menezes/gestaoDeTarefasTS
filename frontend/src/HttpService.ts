@@ -7,12 +7,12 @@ import {User} from "./interfaces/user.interface";
   providedIn: 'root'
 })
 export class HttpService {
-  private apiUrl = 'http://localhost:3000/api/';
+  private apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, { username, password });
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password });
   }
 
   getUserProfile(): Observable<User> {

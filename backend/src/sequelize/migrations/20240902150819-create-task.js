@@ -3,10 +3,11 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('tasks', {
-      id: {
-        type: Sequelize.DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
-        primaryKey: true,
+      taskId: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true
       },
       title: {
         type: Sequelize.DataTypes.STRING,
@@ -22,11 +23,11 @@ module.exports = {
         defaultValue: false,
       },
       userId: {
-        type: Sequelize.DataTypes.INTEGER.UNSIGNED,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id',
+          key: 'userId',
         },
         onDelete: 'CASCADE',
       },

@@ -1,6 +1,6 @@
 // auth.service.ts
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs';
 import {Router} from "@angular/router";
 import {HttpService} from "../HttpService";
 
@@ -13,15 +13,26 @@ export class AuthService {
 
   constructor(private router: Router, private httpService: HttpService) { }
 
-  login(username: string, password: string): Observable<any> {
-    return this.httpService.login(username, password).pipe(
+  login(email: string, password: string): Observable<any> {
+    return this.httpService.login(email, password).pipe(
       tap(response => {
-        if (response.token) {
+        if (response && response.token) {
           localStorage.setItem('token', response.token);
           this.isLoggedInSubject.next(true);
+          localStorage.setItem('userName', response.name);
+          console.log(response);
+
         }
+      }),
+      catchError(error => {
+        console.error('Login error', error);
+        return throwError(() => new Error('Login failed'));
       })
     );
+  }
+
+  getUserName(): string {
+    return localStorage.getItem('userName') || '';
   }
 
   logout(): void {

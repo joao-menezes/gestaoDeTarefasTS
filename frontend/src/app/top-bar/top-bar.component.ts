@@ -14,7 +14,7 @@ import {clearCanvas} from "chart.js/helpers";
 })
 export class TopBarComponent implements OnInit {
   isLoggedIn: boolean = false;
-  userName: string = 'Elizabeth';
+  userName: string = '';
 
   userNotification: number = 0;
   notifications: string[] = [];
@@ -33,14 +33,16 @@ export class TopBarComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private notificationService: NotificationService,
-    private appComponent: AppComponent,
+    private appComponent: AppComponent
   ) {}
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
+      this.userName = this.authService.getUserName();
       this.cdr.detectChanges();
     });
+    console.log( this.userName );
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -146,6 +148,7 @@ export class TopBarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    localStorage.removeItem('userName');
   }
 
   toggleNotificationModal(): void {
