@@ -21,7 +21,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const getUsersFromId = async (req: Request, res: Response) => {
   try {
     const {userId} = req.params;
-    const user: UserModel | null = await UserModel.findOne({where: {id: userId}});
+    const user: UserModel | null = await UserModel.findOne({where: {userId: userId}});
 
     if(!user) return res.status(HttpCodes.NOT_FOUND).send('No user found.');
 
@@ -43,7 +43,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const [updated] = await UserModel.update(req.body, { where: {id: userId } });
+    const [updated] = await UserModel.update(req.body, { where: {userId: userId } });
     if (updated) {
       const updatedUser = await UserModel.findByPk(userId);
       res.json(updatedUser);
@@ -58,7 +58,7 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const deleted = await UserModel.destroy({ where: { id: userId } });
+    const deleted = await UserModel.destroy({ where: { userId: userId } });
     if (deleted) {
       res.json({
         code: HttpCodes.OK,

@@ -7,7 +7,8 @@ import {
     getTasksFromId
 } from '../controllers/taskController';
 import {createUser, deleteUser, getUser, getUsersFromId, updateUser} from "../controllers/userController";
-import {authenticateToken} from "../../middleware/authToken";
+import {authenticateToken} from "../middleware/authToken";
+import HttpCodes from "http-status-codes";
 
 const router = Router();
 
@@ -22,5 +23,9 @@ router.get('/user/:userId', getUsersFromId);
 router.post('/user', createUser);
 router.put('/user/:userId', updateUser);
 router.delete('/user/:userId', deleteUser);
+
+router.get('/health-check', (req, res) => {
+  res.status(HttpCodes.OK).send('Server is healthy');
+});
 
 export default router;

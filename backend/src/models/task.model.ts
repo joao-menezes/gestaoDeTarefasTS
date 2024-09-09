@@ -1,13 +1,16 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, ForeignKey, Model, Optional } from 'sequelize';
 import sequelize from "../sequelize/config/sequelize.config";
-import UserModel from "./user.model";
+import UserModel from './user.model';
+
 
 interface TaskAttributes {
   id: number;
   title: string;
-  description?: string;
+  description: string;
   completed: boolean;
-  userId: number;
+  userId: ForeignKey<UserModel['id']>;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {}
@@ -15,48 +18,55 @@ interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {}
 class TaskModel extends Model<TaskAttributes, TaskCreationAttributes> implements TaskAttributes {
   public id!: number;
   public title!: string;
-  public description?: string;
+  public description!: string;
   public completed!: boolean;
-  public userId!: number;
 
-  public readonly user?: UserModel;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  public userId!: ForeignKey<UserModel['id']>;
 }
 
-TaskModel.init({
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  completed: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
-  userId: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
+TaskModel.init(
+  {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    completed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
     },
   },
-}, {
-  sequelize,
-  tableName: 'tasks',
-});
+  {
+    sequelize,
+    tableName: 'tasks',
+    timestamps: true,
+  }
+);
 
-TaskModel.belongsTo(UserModel, {
-  foreignKey: 'userId',
-  as: 'user',
-});
+// TaskModel.belongsTo(UserModel, {
+//   foreignKey: 'userId',
+//   as: 'user',
+// });
 
 export default TaskModel;

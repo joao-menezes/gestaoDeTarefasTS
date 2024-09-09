@@ -10,6 +10,56 @@ export class SharedErrors {
         }
     }
 
+    static get BadRequest() {
+      return {
+          code: HttpCodes.BAD_REQUEST,
+          message: 'BadRequest'
+      };
+  }
+
+  static get Unauthorized() {
+      return {
+          code: HttpCodes.UNAUTHORIZED,
+          message: 'Unauthorized'
+      };
+  }
+
+  static get Forbidden() {
+      return {
+          code: HttpCodes.FORBIDDEN,
+          message: 'Forbidden'
+      };
+  }
+
+  static get NotFound() {
+      return {
+          code: HttpCodes.NOT_FOUND,
+          message: 'NotFound'
+      };
+  }
+
+  static get Conflict() {
+      return {
+          code: HttpCodes.CONFLICT,
+          message: 'Conflict'
+      };
+  }
+
+  static get UnprocessableEntity() {
+      return {
+          code: HttpCodes.UNPROCESSABLE_ENTITY,
+          message: 'UnprocessableEntity'
+      };
+  }
+
+  static get ServiceUnavailable() {
+      return {
+          code: HttpCodes.SERVICE_UNAVAILABLE,
+          message: 'ServiceUnavailable'
+      };
+  }
+
+
 
     //COMMON ERRORS
     static get InvalidEmailFormat() {
@@ -59,5 +109,20 @@ export class SharedErrors {
             code: HttpCodes.NOT_FOUND,
             message: 'Email Already Exists'
         }
+    }
+
+    static get UserAlreadyExists(){
+      return {
+          code: HttpCodes.NOT_FOUND,
+          message: 'User Already Exists'
+      }
+    }
+
+
+    static get InvalidCreadintial(){
+      return {
+          code: HttpCodes.NOT_FOUND,
+          message: 'Invalid credentials'
+      }
     }
 }

@@ -2,10 +2,17 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+
+    const bcrypt = require('bcrypt');
+    const saltRounds = 10;
+    const hashedPasswordJohn = await bcrypt.hash('password123', saltRounds);
+    // console.log(hashedPasswordJohn)
+    const hashedPasswordJane = await bcrypt.hash('password456', saltRounds);
+
     await queryInterface.bulkInsert('users', [{
       name: 'John Doe',
       email: 'john.doe@example.com',
-      password: 'password123',
+      password: hashedPasswordJohn,
       tasks: 10,
       completedTasks: 4,
       createdAt: new Date(),
@@ -13,7 +20,7 @@ module.exports = {
     }, {
       name: 'Jane Smith',
       email: 'jane.smith@example.com',
-      password: 'password456',
+      password: hashedPasswordJane,
       tasks: 20,
       completedTasks: 10,
       createdAt: new Date(),
