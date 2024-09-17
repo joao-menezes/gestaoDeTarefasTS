@@ -25,16 +25,15 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password } = req.body;
         const existingUser = yield user_model_1.default.findOne({ where: { email } });
-        if (existingUser) {
+        if (existingUser)
             return res.status(http_status_codes_1.default.BAD_REQUEST).json({ error: shared_errors_1.SharedErrors.UserAlreadyExists });
-        }
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         const user = yield user_model_1.default.create({
             name,
             email,
             password: hashedPassword,
         });
-        res.status(http_status_codes_1.default.CREATED).json({ message: 'User created successfully', userId: user.userId });
+        res.status(http_status_codes_1.default.CREATED).json({ message: 'User created successfully' });
     }
     catch (error) {
         res.status(http_status_codes_1.default.INTERNAL_SERVER_ERROR).json({ error: shared_errors_1.SharedErrors.InternalServerError });
